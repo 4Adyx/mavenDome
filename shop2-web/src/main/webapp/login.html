@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript" src="angularjs/angular.min.js"></script>
+<script src="angularjs/pagination.js"></script>
+<link rel="stylesheet" href="angularjs/pagination.css">
+<link rel="stylesheet" href="css2/index2.css" ></link>
+<script type="text/javascript">
+var app=angular.module("myApp",[]);
+app.controller("userController",function($scope,$http){
+	$scope.userlist={};
+	$scope.login=function(){
+		$http.post("../shop/login.do",$scope.userlist).success(
+			function(response){
+				if($scope.userlist.js==0){
+					alert("商品成功");
+					location.href="list.html";
+				}else{
+					alert("订单成功");
+					location.href="list2.html";
+				}
+				
+			}		
+		);
+	}
+})
+</script>
+<body ng-app="myApp" ng-controller="userController">
+<form>
+	用户名:<input type="text" ng-model="userlist.username"><br>
+	密码:<input type="text" ne-model="userlist.password"><br>
+	<input type="button" value="登录" ng-click="login()"><br>
+</form>
+</body>
+</html>

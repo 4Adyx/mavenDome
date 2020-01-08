@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript" src="angularjs/angular.min.js"></script>
+<script src="angularjs/pagination.js"></script>
+<link rel="stylesheet" href="angularjs/pagination.css">
+<link rel="stylesheet" href="css2/index2.css" ></link>
+<!-- 分页组件开始 -->
+<script src="angularjs/pagination.js"></script>
+<link rel="stylesheet" href="angularjs/pagination.css">
+<!-- 分页组件结束 -->
+<link rel="stylesheet" href="kindeditor/themes/default/default.css" />
+<script charset="utf-8" src="kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript">
+		var app=angular.module("myApp",[]);
+		app.controller("dingController",function($scope,$http){
+			$scope.shoplist={};
+			$scope.find=function(){
+				$http.post("../shop/find.do").success(
+					function(response){
+						$scope.list=response;
+					}		
+				);
+			}
+			$scope.on=function(id){
+				$http.post("../shop/on.do?id="+id).success(
+					function(response){
+						$scope.find();
+					}		
+				);
+			}
+		})
+</script>
+<body ng-app="myApp" ng-controller="dingController" ng-init="find()">
+<table>
+	<tr>
+		<td>ID</td>
+		<td>商品名称</td>
+		<td>购买数量</td>
+		<td>订单金额</td>
+		<td>状态</td>
+	</tr>
+	<tr ng-repeat="entity in list"> 
+		<td>{{entity.id}}</td>
+		<td>{{entity.name}}</td>
+		<td>{{entity.ssum}}</td>
+		<td>{{entity.price}}</td>
+		<td ng-if="entity.fh==0">待发货</td>
+		<td ng-if="entity.fh==1">已发货</td>
+		<td><input type="button" ng-if="entity.fh==0" value="发货" ng-click="on(entity.id)"></td>
+	</tr>
+</table>
+</body>
+</html>

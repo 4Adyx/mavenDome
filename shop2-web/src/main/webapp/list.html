@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript" src="angularjs/angular.min.js"></script>
+<script src="angularjs/pagination.js"></script>
+<link rel="stylesheet" href="angularjs/pagination.css">
+<link rel="stylesheet" href="css2/index2.css" ></link>
+<!-- 分页组件开始 -->
+<script src="angularjs/pagination.js"></script>
+<link rel="stylesheet" href="angularjs/pagination.css">
+<!-- 分页组件结束 -->
+<link rel="stylesheet" href="kindeditor/themes/default/default.css" />
+<script charset="utf-8" src="kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript">
+		var app=angular.module("myApp",[]);
+		app.controller("shopController",function($scope,$http){
+			$scope.shoplist={};
+			$scope.findAll=function(){
+				$http.post("../shop/findAll.do").success(
+					function(response){
+						$scope.list=response;
+					}		
+				);
+			}
+			$scope.add=function(id){
+				localStorage.setItem("id",id);
+				location.href="add.html";
+				
+				
+			}
+		})
+</script>
+<body ng-app="myApp" ng-controller="shopController" ng-init="findAll()">
+<table>
+	<tr>
+		<td>ID</td>
+		<td>商品名称</td>
+		<td>价格</td>
+		<td>库存</td>
+		<td></td>
+	</tr>
+	<tr ng-repeat="entity in list"> 
+		<td>{{entity.id}}</td>
+		<td>{{entity.name}}</td>
+		<td>{{entity.price}}</td>
+		<td>{{entity.sum}}</td>
+		<td><input type="button" value="购买" ng-click="add(entity.id)"></td>
+	</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript" src="angularjs/angular.min.js"></script>
+<script src="angularjs/pagination.js"></script>
+<link rel="stylesheet" href="angularjs/pagination.css">
+<link rel="stylesheet" href="css2/index2.css" ></link>
+<script type="text/javascript">
+var app=angular.module("myApp",[]);
+app.controller("shopController",function($scope,$http){
+	$scope.shoplist={};
+	$scope.shops={};
+	$scope.id=localStorage.getItem("id");
+	$scope.hui=function(){
+		$http.post("../shop/hui.do?id="+$scope.id).success(
+			function(response){
+				$scope.shops=response;
+			}
+		);
+	}
+	$scope.add=function(){
+		if($scope.shops.sum>$scope.shoplist.ssum){
+			$http.post("../shop/add.do",$scope.shoplist).success(
+					function(response){
+						$scope.shoplist.price=$scope.shoplist.ssum * $scope.shops.price;
+						location.href="list2.html"
+					}
+				);
+		}else{
+			alert("库存不足");
+		}
+		
+	}
+	$scope.$watch("shoplist.ssum")=function(){
+		$scope.shoplist.price=$scope.shopss.price*$scope.schoplist.ssum
+	}
+})
+</script>
+<body  ng-app="myApp" ng-controller="shopController" ng-init="hui()">
+<form>
+	商品名称:<input type="text" ng-model="shops.name" disabled="disabled"><br>
+	商品库存:<input type="text" ng-model="shops.sum" disabled="disabled"><br>
+	商品单价:<input type="text" ng-model="shops.price" disabled="disabled"><br>
+	购买数量:<input type="text" ng-model="shoplist.ssum"><br>
+	订单金额:<input type="text" ng-model="shoplist.price"><br>
+	<input type="button" ng-if="shops.sum==0" value="提交" disabled="disabled"><br>
+	<input type="button" ng-if="shops.sum==1" value="提交" ng-click="add()"><br>
+	
+</form>
+</body>
+</html>
